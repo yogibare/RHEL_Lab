@@ -1,0 +1,17 @@
+#!/bin/sh
+
+yum install -y ipa-client chrony bash-completion bash-completion-extra
+
+# chrony is installed by default on the exam
+# this is a minimal installed server, so to
+# not add extra difficulty we enable it.
+systemctl enable chronyd
+systemctl start  chronyd
+
+while ! (echo > /dev/tcp/classroom/389) >/dev/null 2>&1; do
+    echo "ipa server not ready yet - waiting for 10s"
+    sleep 10
+done
+
+ipa-client-install --mkhomedir --enable-dns-updates --force-ntpd -p admin@EXAMPLE.COM --password='password' --force-join -U
+echo -n 'password' | kinit admin

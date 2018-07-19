@@ -1,0 +1,9 @@
+#!/bin/sh
+
+useradd student -p $(echo student | openssl passwd -stdin -1) -G wheel
+usermod root -p $(echo redhat | openssl passwd -stdin -1)
+
+systemctl enable firewalld.service
+systemctl start firewalld.service
+
+yum update -y

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+yum group install -y "Server with GUI"
